@@ -10,6 +10,9 @@ For now I have planned:-
   - Delivery of packages
   - Arrival of domestic helps
 - Notice board for general announcement
+  - Polling for an event
+  - Payment for events
+- Complaint registration
 - Book community hall 
 
 ## Tech stack
