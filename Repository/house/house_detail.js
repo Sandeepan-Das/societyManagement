@@ -1,13 +1,14 @@
 const collection = require("../../Database/db")
 
-exports.insertHouseDetails = async (data) => {
+insertHouseDetails = async (data) => {
 
     const key = `houseDetails_${data.type}`
     try {
         const result = await collection.upsert(key, data)
     } catch (error) {
-        throw new Error
+        console.log("A")
+        throw (error)
     }
 }
 
-// module.exports = insertHouseDetails()
+module.exports = insertHouseDetails

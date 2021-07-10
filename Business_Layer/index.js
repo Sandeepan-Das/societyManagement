@@ -1,1 +1,5 @@
-// All the different business queries to bo written
+const houseDetails = require("./house/house_detail")
+
+module.exports = {
+    houseDetails
+}
