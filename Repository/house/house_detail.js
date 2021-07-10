@@ -6,7 +6,7 @@ insertHouseDetails = async (data) => {
     try {
         const result = await collection.upsert(key, data)
     } catch (error) {
-        console.log("A")
+        
         throw (error)
     }
 }
