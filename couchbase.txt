@@ -1,0 +1,1 @@
+For n1ql query atleast one index is required and can be made through UI

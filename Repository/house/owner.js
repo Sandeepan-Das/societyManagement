@@ -1,4 +1,4 @@
-const collection = require("../../Database/db")
+const { collection, cluster } = require("../../Database/db")
 /*
     name
     type
@@ -6,17 +6,30 @@ const collection = require("../../Database/db")
     Family Members 
         name
         relation
-    Parking
-    Vehicle
-    Phone_Number
+    parking
+    vehicle
+    phone_Number
+    roomNo"
  */
 
 insertOwner = async (data) => {
+    var options,query;
     const key = `${data.type}_${data.uuid}`
+
+    if (data.occupiedBy === "yes") {
+        query = 'UPDATE `house_details` AS hd SET hd.occupiedBy = $1,hd.ownedBy=$3 WHERE META(hd).id = $2'
+        options = { parameters: [key, data.roomNo, key] }
+    }
+    else {
+        query = 'UPDATE `house_details` AS hd SET hd.ownedBy = $1 WHERE META(hd).id = $2'
+        options = { parameters: [key, data.roomNo] }
+    }
+
     try {
         const result = await collection.upsert(key, data)
-    } catch (error) {
+        const result2 = await cluster.query(query, options)
 
+    } catch (error) {
         throw (error)
     }
 }
