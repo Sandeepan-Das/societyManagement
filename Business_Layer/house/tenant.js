@@ -8,7 +8,7 @@ tenants = async (req, res) => {
         res.send(result)
     } catch (error) {
 
-        res.send(404);
+        res.sendStatus(404)
     }
 
 }
@@ -18,18 +18,20 @@ removeTenants = async (req, res) => {
 
     try {
         const result = await delTenant(id)
-        res.send(200)
+        res.sendStatus(200)
     } catch (error) {
-        res.send(404)
+        res.sendStatus(404)
     }
 }
 
 modifyTenants = async (req, res) => {
     try {
+        req.body.presentMember = "yes"
+        req.body.type = "Tenant"
         const result = await updateTenant(req.body)
-        res.send(200)
+        res.sendStatus(200)
     } catch (error) {
-        res.send(404)
+        res.sendStatus(404)
     }
 }
 

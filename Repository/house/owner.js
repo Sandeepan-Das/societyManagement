@@ -12,9 +12,9 @@ const { collection, cluster } = require("../../Database/db")
     roomNo"
  */
 
-insertResident = async (data) => {
+insertResident = async (data, uuid) => {
     var options, query;
-    const key = `${data.type}_${data.uuid}`
+    const key = `${data.type}_${uuid}`
 
     if (data.type === "Owner" && data.occupiedBy === "no") {
         query = 'UPDATE `house_details` AS hd SET hd.ownedBy = $1 WHERE META(hd).id = $2'
@@ -46,11 +46,11 @@ fetchOwner = async () => {
 }
 
 updateOwner = async (data) => {
-    const query = 'SELECT ownedBy FROM `house_details` AS hd WHERE META(hd).id=$1'
-    const options = { parameters: [data.roomNo] }
+    var query = 'SELECT ownedBy FROM `house_details` AS hd WHERE META(hd).id=$1'
+    var options = { parameters: [data.roomNo] }
     try {
         const result = await cluster.query(query, options)
-        const ownerID = result.rows[0].occupiedBy
+        const ownerID = result.rows[0].ownedBy
 
         const result2 = await collection.upsert(ownerID, data)
     } catch (error) {
@@ -60,7 +60,7 @@ updateOwner = async (data) => {
 
 delOwner = async (roomNo) => {
     var query = 'Select hd.ownedBy,hd.occupiedBy FROM `house_details` AS hd WHERE META(hd).id=$1'
-    
+
     const options = { parameters: [roomNo] }
 
     try {
@@ -83,4 +83,4 @@ delOwner = async (roomNo) => {
     }
 }
 
-module.exports = { insertResident, fetchOwner, updateOwner,delOwner }
+module.exports = { insertResident, fetchOwner, updateOwner, delOwner }

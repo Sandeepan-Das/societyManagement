@@ -1,43 +1,75 @@
-const { insertHouseInfo, fetchOccupiedbyRoomNo ,fetchOccupiedbyName} = require("../../Repository/index")
+const { insertHouseInfo, fetchCompleteDetailsByKey,searchResult,updateHouse } = require("../../Repository/index")
 
 houseInfo = async (req, res) => {
     try {
-
+        req.body.type = "Room"
         const result = await insertHouseInfo(req.body)
-        res.send(200)
+        res.sendStatus(200)
     } catch (error) {
 
-        res.send(404);
+        res.sendStatus(404)
     }
 
 }
 
 
+
+// fetchHouseInfo = async (req, res) => {
+//     if (req.query.id) {
+//         const houseNo = req.query.id
+
+//         try {
+//             const result = await fetchOccupiedbyRoomNo(houseNo)
+
+//             res.send(result)
+//         } catch (error) {
+
+//             res.send(404);
+//         }
+//     } else
+//         if (req.query.name) {
+//             const name = req.query.name
+
+//             try {
+//                 const result = await fetchOccupiedbyName(name)
+
+//                 res.send(result)
+//             } catch (error) {
+
+//                 res.send(404);
+//             }
+//         }
+// }
 fetchHouseInfo = async (req, res) => {
-    if (req.query.id) {
-        const houseNo = req.query.id
+    const key = req.query.id;
+    try {
 
-        try {
-            const result = await fetchOccupiedbyRoomNo(houseNo)
+        const data = await fetchCompleteDetailsByKey(key)
+        res.send({data})
+    } catch (error) {
 
-            res.send(result)
-        } catch (error) {
+    }
 
-            res.send(404);
-        }
-    } else
-        if (req.query.name) {
-            const name = req.query.name
-
-            try {
-                const result = await fetchOccupiedbyName(name)
-
-                res.send(result)
-            } catch (error) {
-
-                res.send(404);
-            }
-        }
 }
 
-module.exports = { houseInfo, fetchHouseInfo }
+fetchSearchQuery = async (req,res)=>{
+    try {
+
+        const data = await searchResult(req.params.data)
+        res.send({data})
+    } catch (error) {
+
+    }
+}
+
+modifyHouse = async (req,res)=>{
+    try {
+
+        const data = await updateHouse(req.body)
+        res.sendStatus(200)
+        
+    } catch (error) {
+
+    }
+}
+module.exports = { houseInfo, fetchHouseInfo ,fetchSearchQuery,modifyHouse}
