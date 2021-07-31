@@ -20,7 +20,7 @@ searchResult = async (data) => {
         "analyzer": "standard"
 
     }
-    var query = 'SELECT * FROM `house_details` AS hd WHERE SEARCH(hd,$1) AND hd.presentMember="yes";'
+    var query = 'SELECT * FROM `house_details` AS hd WHERE SEARCH(hd,$1) AND hd.leavingDateTime="";'
     const options = { parameters: [param] }
 
 
@@ -112,19 +112,19 @@ fetchCompleteDetailsByKey = async (data) => {
 
 }
 
-updateHouse = async (data)=>{
-    
+updateHouse = async (data) => {
+
     try {
         key = `${data.block}-${data.roomNo}`
         var query = 'UPDATE `house_details` AS hd SET hd.houseType=$1 WHERE META(hd).id = $2 '
-        var options = { parameters: [data.houseType,key] }
+        var options = { parameters: [data.houseType, key] }
         houseInfo = await cluster.query(query, options)
     } catch (error) {
 
     }
-    
+
 }
 
 module.exports = {
-    insertHouseInfo,fetchCompleteDetailsByKey, searchResult, updateHouse
+    insertHouseInfo, fetchCompleteDetailsByKey, searchResult, updateHouse
 }

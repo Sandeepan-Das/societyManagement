@@ -36,7 +36,7 @@ insertResident = async (data, uuid) => {
 }
 
 fetchOwner = async () => {
-    const query = 'Select * FROM `house_details` WHERE type="Owner" AND presentMember="yes"'
+    const query = 'Select * FROM `house_details` WHERE type="Owner" AND leavingDateTime=""'
     try {
         const result2 = await cluster.query(query)
         return result2.rows
@@ -51,14 +51,17 @@ updateOwner = async (data) => {
     try {
         const result = await cluster.query(query, options)
         const ownerID = result.rows[0].ownedBy
-
-        const result2 = await collection.upsert(ownerID, data)
+        
+        query = 'UPDATE `house_details` AS hd SET hd.name=$1,hd.residents = $2,hd.parking=$3,hd.vehicleList=$4,hd.registeredNumber=$5 WHERE META(hd).id=$6'
+        options = { parameters: [data.name, data.residents, data.parking, data.vehicleList, data.registeredNumber, ownerID] }
+        const result2 = await cluster.query(query, options)
     } catch (error) {
+        
         throw (error)
     }
 }
 
-delOwner = async (roomNo) => {
+delOwner = async (roomNo, leavingDateTime) => {
     var query = 'Select hd.ownedBy,hd.occupiedBy FROM `house_details` AS hd WHERE META(hd).id=$1'
 
     const options = { parameters: [roomNo] }
@@ -74,8 +77,8 @@ delOwner = async (roomNo) => {
         }
         const result2 = await cluster.query(query, options)
 
-        query = 'UPDATE `house_details` AS hd SET hd.presentMember="no" WHERE META(hd).id = $1'
-        const options1 = { parameters: [ID2] }
+        query = 'UPDATE `house_details` AS hd SET hd.leavingDateTime=$2 WHERE META(hd).id = $1'
+        const options1 = { parameters: [ID2, leavingDateTime] }
         const result3 = await cluster.query(query, options1)
 
     } catch (error) {

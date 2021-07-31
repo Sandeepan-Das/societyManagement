@@ -1,10 +1,12 @@
 const uniqid = require('uniqid');
+const momnent = require("moment")
 
 const { insertResident, fetchOwner, updateOwner, delOwner } = require("../../Repository/index")
 
 residentDetails = async (req, res) => {
-    
-    req.body.presentMember = "yes"
+    req.body.joiningDateTime = momnent().format('YYYY-MM-DD:hh:mm:ss')
+    // req.body.presentMember = "yes"
+    req.body.leavingDateTime = ""
     try {
 
         const result = await insertResident(req.body,uniqid())
@@ -31,8 +33,6 @@ owners = async (req, res) => {
 
 modifyOwner = async (req, res) => {
     try {
-        req.body.presentMember = "yes"
-        req.body.type="Owner"
         const result = await updateOwner(req.body)
         res.sendStatus(200)
     } catch (error) {
@@ -45,7 +45,7 @@ removeOwner = async (req, res) => {
     const roomNo = req.params.id
     try {
 
-        const result = await delOwner(roomNo)
+        const result = await delOwner(roomNo,momnent().format('YYYY-MM-DD:hh:mm:ss'))
         res.sendStatus(200)
     } catch (error) {
 
@@ -53,4 +53,4 @@ removeOwner = async (req, res) => {
     }
 }
 
-module.exports = { residentDetails, owners, modifyOwner,removeOwner }
+module.exports = { residentDetails, owners, modifyOwner, removeOwner }
