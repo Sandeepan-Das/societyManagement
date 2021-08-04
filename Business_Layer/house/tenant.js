@@ -19,7 +19,7 @@ removeTenants = async (req, res) => {
 
     try {
         const result = await delTenant(id,momnent().format('YYYY-MM-DD:hh:mm:ss'))
-        res.sendStatus(200)
+        res.status(200).send()
     } catch (error) {
         res.sendStatus(404)
     }
@@ -28,7 +28,7 @@ removeTenants = async (req, res) => {
 modifyTenants = async (req, res) => {
     try {
         const result = await updateTenant(req.body)
-        res.sendStatus(200)
+        res.status(200).send()
     } catch (error) {
         res.sendStatus(404)
     }

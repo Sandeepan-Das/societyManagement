@@ -4,7 +4,7 @@ houseInfo = async (req, res) => {
     try {
         req.body.type = "Room"
         const result = await insertHouseInfo(req.body)
-        res.sendStatus(200)
+        res.status(200).send()
     } catch (error) {
 
         res.sendStatus(404)
@@ -66,7 +66,7 @@ modifyHouse = async (req,res)=>{
     try {
 
         const data = await updateHouse(req.body)
-        res.sendStatus(200)
+        res.status(200).send()
         
     } catch (error) {
 

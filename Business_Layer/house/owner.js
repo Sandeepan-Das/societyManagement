@@ -10,7 +10,7 @@ residentDetails = async (req, res) => {
     try {
 
         const result = await insertResident(req.body,uniqid())
-        res.sendStatus(200)
+        res.status(200).send()
     } catch (error) {
 
         res.sendStatus(404)
@@ -34,7 +34,7 @@ owners = async (req, res) => {
 modifyOwner = async (req, res) => {
     try {
         const result = await updateOwner(req.body)
-        res.sendStatus(200)
+        res.status(200).send()
     } catch (error) {
 
         res.sendStatus(404)
@@ -46,7 +46,7 @@ removeOwner = async (req, res) => {
     try {
 
         const result = await delOwner(roomNo,momnent().format('YYYY-MM-DD:hh:mm:ss'))
-        res.sendStatus(200)
+        res.status(200).send()
     } catch (error) {
 
         res.sendStatus(404)
