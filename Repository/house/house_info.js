@@ -1,17 +1,4 @@
 const { collection, cluster } = require("../../Database/db")
-/*
-    type:Room
-    roomNo:
-    block:
-    ownedBy:
-    occupiedBy:
-    houseType: 
-            type:
-            rooms:
-            balcony:
-            floor:
-            bathrooms:
-*/
 
 searchResult = async (data) => {
     const param = {
@@ -35,7 +22,7 @@ searchResult = async (data) => {
 }
 
 insertHouseInfo = async (data) => {
-    const key = `${data.block}-${data.roomNo}`
+    const key = data.uuid
     try {
         const result = await collection.upsert(key, data)
     } catch (error) {
@@ -43,6 +30,15 @@ insertHouseInfo = async (data) => {
         throw (error)
     }
 }
+// insertHouseInfo = async (data) => {
+//     const key = `${data.block}-${data.roomNo}`
+//     try {
+//         const result = await collection.upsert(key, data)
+//     } catch (error) {
+
+//         throw (error)
+//     }
+// }
 
 // fetchOccupiedbyRoomNo = async (data) => {
 
@@ -78,30 +74,13 @@ insertHouseInfo = async (data) => {
 //     }
 // }
 
-fetchCompleteDetailsByKey = async (data) => {
+fetchHouseByAddr = async (data) => {
     var houseInfo, owner, tenant;
     try {
-
-
-
-        var query = 'SELECT * FROM house_details WHERE META().id=$1'
+        var query = 'SELECT * FROM house_details WHERE house_details.addr=$1'
         var options = { parameters: [data] }
         houseInfo = await cluster.query(query, options)
-        houseInfo = houseInfo.rows[0];
-
-        if (houseInfo.house_details.ownedBy != undefined)
-            query = 'SELECT * FROM house_details WHERE META().id=$1'
-        options = { parameters: [houseInfo.house_details.ownedBy] }
-        owner = await cluster.query(query, options)
-        owner = owner.rows[0];
-
-        if ((houseInfo.house_details.ownedBy != houseInfo.house_details.occupiedBy) && houseInfo.house_details.occupiedBy != undefined) {
-
-            query = 'SELECT * FROM house_details WHERE META().id=$1'
-            options = { parameters: [houseInfo.house_details.occupiedBy] }
-            tenant = await cluster.query(query, options)
-            tenant = tenant.rows[0];
-        }
+        return houseInfo.rows[0].house_details;
 
     } catch (error) {
 
@@ -111,13 +90,62 @@ fetchCompleteDetailsByKey = async (data) => {
     }
 
 }
+fetchHouseByKey = async (data) => {
+    var houseInfo, owner, tenant;
+    try {
+        var query = 'SELECT * FROM house_details WHERE META().id=$1'
+        var options = { parameters: [data] }
+        houseInfo = await cluster.query(query, options)
+        return houseInfo.rows[0].house_details;
+
+    } catch (error) {
+
+    }
+    return {
+        houseInfo, owner, tenant
+    }
+
+}
+// fetchCompleteDetailsByKey = async (data) => {
+//     var houseInfo, owner, tenant;
+//     try {
+
+
+
+//         var query = 'SELECT * FROM house_details WHERE META().id=$1'
+//         var options = { parameters: [data] }
+//         houseInfo = await cluster.query(query, options)
+//         houseInfo = houseInfo.rows[0];
+
+//         if (houseInfo.house_details.ownedBy != undefined)
+//             query = 'SELECT * FROM house_details WHERE META().id=$1'
+//         options = { parameters: [houseInfo.house_details.ownedBy] }
+//         owner = await cluster.query(query, options)
+//         owner = owner.rows[0];
+
+//         if ((houseInfo.house_details.ownedBy != houseInfo.house_details.occupiedBy) && houseInfo.house_details.occupiedBy != undefined) {
+
+//             query = 'SELECT * FROM house_details WHERE META().id=$1'
+//             options = { parameters: [houseInfo.house_details.occupiedBy] }
+//             tenant = await cluster.query(query, options)
+//             tenant = tenant.rows[0];
+//         }
+
+//     } catch (error) {
+
+//     }
+//     return {
+//         houseInfo, owner, tenant
+//     }
+
+// }
 
 updateHouse = async (data) => {
 
     try {
-        key = `${data.block}-${data.roomNo}`
-        var query = 'UPDATE `house_details` AS hd SET hd.houseType=$1 WHERE META(hd).id = $2 '
-        var options = { parameters: [data.houseType, key] }
+        
+        var query = 'UPDATE `house_details` AS hd SET hd.houseType=$1, hd.block=$3, hd.roomNo=$4, hd.addr=$5 WHERE META(hd).id = $2 '
+        var options = { parameters: [data.houseType, data.uuid, data.block, data.roomNo, data.addr] }
         houseInfo = await cluster.query(query, options)
     } catch (error) {
 
@@ -126,5 +154,5 @@ updateHouse = async (data) => {
 }
 
 module.exports = {
-    insertHouseInfo, fetchCompleteDetailsByKey, searchResult, updateHouse
+    insertHouseInfo, fetchHouseByAddr, searchResult, updateHouse,fetchHouseByKey
 }

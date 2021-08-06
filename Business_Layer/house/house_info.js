@@ -1,8 +1,11 @@
-const { insertHouseInfo, fetchCompleteDetailsByKey,searchResult,updateHouse } = require("../../Repository/index")
+const uniqid = require('uniqid');
+const { insertHouseInfo, fetchHouseByAddr, searchResult, updateHouse, fetchOwnerById, fetchTenantById, fetchHouseByKey } = require("../../Repository/index")
 
 houseInfo = async (req, res) => {
     try {
         req.body.type = "Room"
+        req.body.uuid = uniqid()
+        req.body.addr = `${req.body.block}-${req.body.roomNo}`
         const result = await insertHouseInfo(req.body)
         res.status(200).send()
     } catch (error) {
@@ -40,36 +43,59 @@ houseInfo = async (req, res) => {
 //             }
 //         }
 // }
-fetchHouseInfo = async (req, res) => {
+fetchCompleteDetails = async (req, res) => {
     const key = req.query.id;
+    var data = {}
+    var houseInfo, owner, tenant
     try {
 
-        const data = await fetchCompleteDetailsByKey(key)
-        res.send({data})
+        houseInfo = await fetchHouseByAddr(key)
+        if (houseInfo.ownedBy != undefined) {
+            owner = await fetchOwnerById(houseInfo.ownedBy)
+            const result = await fetchHouseByKey(owner.roomNo)
+            owner.roomNo = result.addr
+        }
+        if ((houseInfo.ownedBy != houseInfo.occupiedBy) && houseInfo.occupiedBy != undefined) {
+            tenant = await fetchTenantById(houseInfo.occupiedBy)
+            const result = await fetchHouseByKey(tenant.roomNo)
+            tenant.roomNo = result.addr
+        }
+        data.houseInfo = houseInfo
+        data.owner = owner
+        data.tenant = tenant
+        res.send({ data })
     } catch (error) {
 
     }
 
 }
 
-fetchSearchQuery = async (req,res)=>{
+fetchSearchQuery = async (req, res) => {
     try {
 
         const data = await searchResult(req.params.data)
-        res.send({data})
+        for (const element of data) {
+
+            const result = await fetchHouseByKey(element.hd.roomNo)
+            element.hd.roomNo = result.addr
+            console.log(element.hd.roomNo)
+        }
+
+        console.log(data)
+        res.send({ data })
     } catch (error) {
 
     }
 }
 
-modifyHouse = async (req,res)=>{
+modifyHouse = async (req, res) => {
     try {
-
+        req.body.addr = `${req.body.block}-${req.body.roomNo}`
         const data = await updateHouse(req.body)
         res.status(200).send()
-        
+
     } catch (error) {
 
     }
 }
-module.exports = { houseInfo, fetchHouseInfo ,fetchSearchQuery,modifyHouse}
+module.exports = { houseInfo, fetchCompleteDetails, fetchSearchQuery, modifyHouse }

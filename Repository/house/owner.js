@@ -1,20 +1,8 @@
 const { collection, cluster } = require("../../Database/db")
-/*
-    name
-    type
-    uuid
-    Family Members 
-        name
-        relation
-    parking
-    vehicle
-    phone_Number
-    roomNo"
- */
 
-insertResident = async (data, uuid) => {
+insertResident = async (data) => {
     var options, query;
-    const key = `${data.type}_${uuid}`
+    const key = `${data.uuid}`
 
     if (data.type === "Owner" && data.occupiedBy === "no") {
         query = 'UPDATE `house_details` AS hd SET hd.ownedBy = $1 WHERE META(hd).id = $2'
@@ -45,18 +33,28 @@ fetchOwner = async () => {
     }
 }
 
-updateOwner = async (data) => {
-    var query = 'SELECT ownedBy FROM `house_details` AS hd WHERE META(hd).id=$1'
-    var options = { parameters: [data.roomNo] }
+fetchOwnerById = async (id) => {
+    const query = 'SELECT * FROM house_details WHERE META().id=$1'
+    options = { parameters: [id] }
     try {
-        const result = await cluster.query(query, options)
-        const ownerID = result.rows[0].ownedBy
-        
+        owner = await cluster.query(query, options)
+        return owner.rows[0].house_details;
+
+    } catch (error) {
+        throw (error)
+    }
+}
+
+
+
+updateOwner = async (data) => {
+    try {
+
         query = 'UPDATE `house_details` AS hd SET hd.name=$1,hd.residents = $2,hd.parking=$3,hd.vehicleList=$4,hd.registeredNumber=$5 WHERE META(hd).id=$6'
-        options = { parameters: [data.name, data.residents, data.parking, data.vehicleList, data.registeredNumber, ownerID] }
+        options = { parameters: [data.name, data.residents, data.parking, data.vehicleList, data.registeredNumber, data.uuid] }
         const result2 = await cluster.query(query, options)
     } catch (error) {
-        
+
         throw (error)
     }
 }
@@ -86,4 +84,4 @@ delOwner = async (roomNo, leavingDateTime) => {
     }
 }
 
-module.exports = { insertResident, fetchOwner, updateOwner, delOwner }
+module.exports = { insertResident, fetchOwner, updateOwner, delOwner, fetchOwnerById }

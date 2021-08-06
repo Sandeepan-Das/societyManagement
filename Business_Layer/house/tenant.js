@@ -15,10 +15,12 @@ tenants = async (req, res) => {
 }
 
 removeTenants = async (req, res) => {
-    const id = req.params.id
+    var roomNo = req.params.id
 
     try {
-        const result = await delTenant(id,momnent().format('YYYY-MM-DD:hh:mm:ss'))
+        const result = await fetchHouseByAddr(roomNo);
+        roomNo = result.uuid
+        const result2 = await delTenant(roomNo, momnent().format('YYYY-MM-DD:hh:mm:ss'))
         res.status(200).send()
     } catch (error) {
         res.sendStatus(404)
