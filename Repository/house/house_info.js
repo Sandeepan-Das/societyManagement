@@ -7,7 +7,7 @@ searchResult = async (data) => {
         "analyzer": "standard"
 
     }
-    var query = 'SELECT * FROM `house_details` AS hd WHERE SEARCH(hd,$1) AND hd.leavingDateTime="";'
+    var query = 'SELECT * FROM `house_details` AS hd JOIN `house_details` AS h ON META(h).id = hd.roomNo WHERE (SEARCH(hd,$1) OR SEARCH(h,$1)) AND hd.leavingDateTime="";'
     const options = { parameters: [param] }
 
 
@@ -154,5 +154,5 @@ updateHouse = async (data) => {
 }
 
 module.exports = {
-    insertHouseInfo, fetchHouseByAddr, searchResult, updateHouse,fetchHouseByKey
+    insertHouseInfo, fetchHouseByAddr, searchResult, updateHouse, fetchHouseByKey
 }

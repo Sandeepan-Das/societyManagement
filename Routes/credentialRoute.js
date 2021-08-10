@@ -1,11 +1,15 @@
 const express = require("express")
 const route = express.Router()
 
-const {signUp} =require("../Business_Layer/index")
+const {signUpResident,generateNewAccessToken,logOutResident,loginResident} =require("../Business_Layer/index")
 
 const auth = require("../middleWares/auth")
 
-route.post("/api/signUp",signUp)
+route.post("/api/signUp",signUpResident)
+route.post("/api/newToken",generateNewAccessToken)
+
+route.post("/api/logout",logOutResident)
+route.post("/api/login",loginResident)
 
 route.get("/api/test",auth,(req,res)=>{
     console.log(req.resident)

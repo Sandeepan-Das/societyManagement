@@ -78,10 +78,10 @@ fetchSearchQuery = async (req, res) => {
 
             const result = await fetchHouseByKey(element.hd.roomNo)
             element.hd.roomNo = result.addr
-            console.log(element.hd.roomNo)
+            
         }
 
-        console.log(data)
+        
         res.send({ data })
     } catch (error) {
 
