@@ -8,7 +8,7 @@ verifyToken = async (req, res, next) => {
 
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, resident) => {
         if (err) res.sendStatus(403)
-        req.resident = resident
+        else req.tokenData = resident
     })
     next()
 }

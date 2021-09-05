@@ -33,6 +33,18 @@ login = async (uuid,token) => {
         throw (error)
     }
 }
+
+const fetchResidentsByEmail = async(email)=>{
+    try {
+        const query = 'SELECT* FROM `house_details` WHERE email=$1 AND leavingDateTime=""'
+        const options = { parameters: [email] }
+        const result = await cluster.query(query, options)
+        return result.rows[0].house_details;
+    } catch (error) {
+
+        throw (error)
+    }
+} 
 module.exports = {
-    signUp, logout, login
+    signUp, logout, login ,fetchResidentsByEmail
 }

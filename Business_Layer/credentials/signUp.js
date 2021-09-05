@@ -2,18 +2,18 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const createError = require("http-errors")
 
-const { signUp, searchResult, fetchOwnerById, logout, login } = require("../../Repository/index")
+const { signUp, fetchOwnerById, logout, login,fetchResidentsByEmail } = require("../../Repository/index")
 require("dotenv").config()
 
 signUpResident = async (req, res, next) => {
     try {
-        const resident = await searchResult(req.body.email)
+        const resident = await fetchResidentsByEmail(req.body.email)
         if (!resident) throw createError(404, "Email not registered")
         const pass = await bcrypt.hash(req.body.password, 8)
-        const accessToken = await jwt.sign({ uuid: resident[0].hd.uuid }, process.env.ACCESS_TOKEN, { expiresIn: "15m" })
-        const refreshToken = await jwt.sign({ uuid: resident[0].hd.uuid }, process.env.REFRESH_TOKEN)
+        const accessToken = await jwt.sign({ uuid: resident.uuid }, process.env.ACCESS_TOKEN, { expiresIn: "15m" })
+        const refreshToken = await jwt.sign({ uuid: resident.uuid }, process.env.REFRESH_TOKEN)
 
-        const result = await signUp(resident[0].hd.uuid, pass, refreshToken)
+        const result = await signUp(resident.uuid, pass, refreshToken)
         res.status(200).send({ accessToken, refreshToken })
     } catch (error) {
         next(error)
@@ -61,13 +61,13 @@ logOutResident = async (req, res) => {
 
 loginResident = async (req,res,next) => {
     try {
-        const resident = await searchResult(req.body.email)
+        const resident = await fetchResidentsByEmail(req.body.email)
         if (!resident) throw createError(404, "Wrong Email Or password")
-        const pass = await bcrypt.compare(req.body.password, resident[0].hd.pass)
-        const accessToken = await jwt.sign({ uuid: resident[0].hd.uuid }, process.env.ACCESS_TOKEN, { expiresIn: "15m" })
-        const refreshToken = await jwt.sign({ uuid: resident[0].hd.uuid }, process.env.REFRESH_TOKEN)
+        const pass = await bcrypt.compare(req.body.password, resident.pass)
+        const accessToken = await jwt.sign({ uuid: resident.uuid }, process.env.ACCESS_TOKEN, { expiresIn: "15m" })
+        const refreshToken = await jwt.sign({ uuid: resident.uuid }, process.env.REFRESH_TOKEN)
 
-        const result = await login(resident[0].hd.uuid, refreshToken)
+        const result = await login(resident.uuid, refreshToken)
         res.status(200).send({ accessToken, refreshToken })
     } catch (error) {
         next(error)

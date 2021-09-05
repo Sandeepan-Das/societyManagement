@@ -3,7 +3,8 @@ const { graphqlHTTP } = require("express-graphql")
 
 const route = express.Router()
 
-const { residentDetails, houseInfo, fetchCompleteDetails, owners, tenants, removeTenants, modifyTenants, modifyOwner, removeOwner, fetchSearchQuery, modifyHouse } = require("../Business_Layer/index")
+const {fetchResident, residentDetails, houseInfo, fetchCompleteDetails, owners, tenants, removeTenants, modifyTenants, modifyOwner, removeOwner, fetchSearchQuery, modifyHouse } = require("../Business_Layer/index")
+const auth = require("../middleWares/auth")
 
 const { schema } = require("../graphQL/schema")
 const resolver = require("../graphQL/resolver")
@@ -13,10 +14,13 @@ route.post("/api/houseInfo", houseInfo)
 
 
 route.get("/api/fetchHouseInfo/:id?/:name?", fetchCompleteDetails)
+route.get("/api/fetchResidentInfo/:roomNo?/:type?", fetchResident)
 route.get("/api/fetchSearchQuery/:data", fetchSearchQuery)
 route.get("/api/fetchOwners", owners)
 route.get("/api/fetchTenants", tenants)
-
+route.get("/api/uuid",auth,(req,res)=>{
+    res.status(200).send({uuid:req.resident.uuid})
+})
 
 
 route.put("/api/update/tenant", modifyTenants)
