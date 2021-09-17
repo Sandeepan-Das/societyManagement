@@ -63,7 +63,7 @@ fetchCompleteDetails = async (req, res) => {
         data.houseInfo = houseInfo
         data.owner = owner
         data.tenant = tenant
-        res.send({ data })
+        res.status(200).send({ data })
     } catch (error) {
 
     }

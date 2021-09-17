@@ -1,1 +1,18 @@
 For n1ql query atleast one index is required and can be made through UI
+
+For opencvnodejs installation in ubuntu
+- https://linuxize.com/post/how-to-install-opencv-on-ubuntu-20-04/  install open cv from source procedure
+
+In package.json add this
+"opencv4nodejs": {
+    "disableAutoBuild": 1,
+    "opencvIncludeDir": "/usr/local/include/opencv4",
+    "opencvLibDir": "/usr/local/lib",
+    "opencvBinDir": "/usr/local/bin"
+  }
+
+  Just check this path wether they contain anything related to opencv 
+  dont need to worry about its contents
+
+  $ cd ./node_modules/opencv-build
+$ node install.js

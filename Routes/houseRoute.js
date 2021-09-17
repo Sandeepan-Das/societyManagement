@@ -13,7 +13,7 @@ route.post("/api/ownerDetails", residentDetails)
 route.post("/api/houseInfo", houseInfo)
 
 
-route.get("/api/fetchHouseInfo/:id?/:name?", fetchCompleteDetails)
+route.get("/api/fetchHouseInfo/:id?", fetchCompleteDetails)
 route.get("/api/fetchResidentInfo/:roomNo?/:type?", fetchResident)
 route.get("/api/fetchSearchQuery/:data", fetchSearchQuery)
 route.get("/api/fetchOwners", owners)

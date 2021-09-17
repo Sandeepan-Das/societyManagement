@@ -7,6 +7,7 @@ const socketIo = require("socket.io")
 const houseRoute = require("./Routes/houseRoute")
 const credentialRoute = require("./Routes/credentialRoute")
 const packageRoute = require("./Routes/packageRoute")
+const workerRoute = require("./Routes/workerRoute")
 
 const errorHandler = require("./error/apiError")
 
@@ -17,14 +18,16 @@ const httpServer = http.createServer(app);
 
 //Middlewares
 app.use(cors())
-app.use(express.json())
-app.use(bodyparser.urlencoded({ extended: true }))
+app.use(bodyparser.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000 }))
+app.use(express.json({limit:"50mb"}))
 const io = socketIo(httpServer)
 
 
 app.use(houseRoute)
 app.use(credentialRoute)
 app.use(packageRoute)
+app.use(workerRoute)
+
 app.use(errorHandler)
 
 // io.on("connection",socketConnection)

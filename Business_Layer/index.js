@@ -5,8 +5,9 @@ const { signUpResident, logOutResident, generateNewAccessToken, loginResident } 
 const {fetchResident} = require("./house/resident")
 const {pendingRequest,checkRequest,validtyRequest} = require("./packageNotification/notify")
 const {checkRequestSecurity,pastlistSecurity} = require("./packageNotification/security")
+const {saveProfile,verifyProfile,check} = require("./worker/profile")
 
 module.exports = {
-    loginResident,fetchResident,pendingRequest,checkRequest,validtyRequest,checkRequestSecurity,pastlistSecurity,
+    loginResident,fetchResident,pendingRequest,checkRequest,validtyRequest,checkRequestSecurity,pastlistSecurity,saveProfile,verifyProfile,check,
     residentDetails, houseInfo, fetchCompleteDetails, owners, tenants, removeTenants, modifyTenants, modifyOwner, removeOwner, fetchSearchQuery, modifyHouse, signUpResident, logOutResident, generateNewAccessToken
 }
