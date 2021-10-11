@@ -1,6 +1,7 @@
 const uniqid = require('uniqid');
 const fs = require("fs")
 const path = require("path");
+const momnent = require("moment")
 
 const faceapi = require("face-api.js")
 
@@ -32,10 +33,11 @@ const saveProfile = async (req, res) => {
         }
     });
     req.body.uuid = id;
-    req.body.file1 = ""
+    req.body.file1 = `http://localhost:3000/workerImages/${id}/1.png`
     req.body.file2 = ""
     req.body.type = "Worker"
-    
+    req.body.joiningDateTime = momnent().format('YYYY-MM-DD:hh:mm:ss')
+    req.body.leavingDateTime = ""
     try {
         const result = await insertWorker(req.body)
     } catch (error) {

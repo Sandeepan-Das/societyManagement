@@ -10,6 +10,7 @@ const packageRoute = require("./Routes/packageRoute")
 const workerRoute = require("./Routes/workerRoute")
 
 const errorHandler = require("./error/apiError")
+const path = require('path')
 
 
 const app = express()
@@ -20,6 +21,7 @@ const httpServer = http.createServer(app);
 app.use(cors())
 app.use(bodyparser.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000 }))
 app.use(express.json({limit:"50mb"}))
+
 const io = socketIo(httpServer)
 
 
@@ -27,6 +29,7 @@ app.use(houseRoute)
 app.use(credentialRoute)
 app.use(packageRoute)
 app.use(workerRoute)
+app.use("/workerImages",express.static(path.join("workerProfile")))
 
 app.use(errorHandler)
 

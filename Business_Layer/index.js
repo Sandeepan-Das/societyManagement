@@ -6,8 +6,11 @@ const {fetchResident} = require("./house/resident")
 const {pendingRequest,checkRequest,validtyRequest} = require("./packageNotification/notify")
 const {checkRequestSecurity,pastlistSecurity} = require("./packageNotification/security")
 const {saveProfile,verifyProfile,check} = require("./worker/profile")
+const {workerPayment,allWorkers} = require("./worker/details")
+const {saveCurrentExpenditure,currentBill,divideBill,monthlyBill} = require("./payment/expenditure")
 
 module.exports = {
-    loginResident,fetchResident,pendingRequest,checkRequest,validtyRequest,checkRequestSecurity,pastlistSecurity,saveProfile,verifyProfile,check,
+    saveCurrentExpenditure,currentBill,divideBill,monthlyBill,allWorkers,
+    loginResident,fetchResident,pendingRequest,checkRequest,validtyRequest,checkRequestSecurity,pastlistSecurity,saveProfile,verifyProfile,check,workerPayment,
     residentDetails, houseInfo, fetchCompleteDetails, owners, tenants, removeTenants, modifyTenants, modifyOwner, removeOwner, fetchSearchQuery, modifyHouse, signUpResident, logOutResident, generateNewAccessToken
 }
