@@ -1,4 +1,4 @@
-For n1ql query atleast one index is required and can be made through UI
+For n1ql query atleast one index is required and can be made through CREATE PRIMARY INDEX ON `house_details` USING GSI
 
 For opencvnodejs installation in ubuntu
 - https://linuxize.com/post/how-to-install-opencv-on-ubuntu-20-04/  install open cv from source procedure

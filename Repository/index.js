@@ -7,8 +7,10 @@ const {updatePendingRequestSecurity,fetchPendingRequestSecurity,changeValidSecur
 const {insertWorker,fetchWorker} =require("./worker/profile")
 const {salary,detailsWorker} = require("./worker/worker")
 const {saveBill,fetchCurrentBill,pastBills,delCurrentBill,shareExpenditure,societyMonthlyBill} = require("./payment/expenditure")
+const {addPendingIssue,fetchIssueFromAdmin} = require("./maintenance/maintenance")
+const {fetchBlockMember,fetchResident}  = require("./house/resident")
 
 module.exports = {
-   saveBill,fetchCurrentBill,pastBills,delCurrentBill,shareExpenditure,societyMonthlyBill,detailsWorker,
+   saveBill,fetchCurrentBill,pastBills,delCurrentBill,shareExpenditure,societyMonthlyBill,detailsWorker,addPendingIssue,fetchIssueFromAdmin,fetchBlockMember,fetchResident,
    searchResult, insertResident, insertHouseInfo, fetchOwner, fetchTenant, delTenant, updateTenant, updateOwner, delOwner, fetchHouseByAddr, updateHouse, fetchOwnerById, fetchTenantById, fetchHouseByKey, signUp, logout, login, fetchResidentsByEmail, updatePendingRequest,fetchPendingRequest, fetchWorker, updatePendingRequestSecurity,fetchPendingRequestSecurity,delFromPending,changeValidSecurity,delFromPendingSecurity,updatePastOrderSecurity,insertWorker,salary
 }
