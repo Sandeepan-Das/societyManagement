@@ -16,4 +16,8 @@ route.get("/api/test",auth,(req,res)=>{
     res.send(200)
 })
 
+route.get("/",()=>{
+    res.send({msg:"check"})
+})
+
 module.exports = route

@@ -9,6 +9,8 @@ const modelPathRoot = "./weights";
 
 const { canvas, faceDetectionNet, saveFile, faceDetectionOptions } = require("../../commons/index")
 
+// i there 👋. Looks like you are running TensorFlow.js in Node.js. To speed things up dramatically, install our node backend, which binds to TensorFlow C++, by running npm i @tensorflow/tfjs-node, or npm i @tensorflow/tfjs-node-gpu if you have CUDA. Then call require('@tensorflow/tfjs-node'); (-gpu suffix for CUDA) at the start of your program. Visit https://github.com/tensorflow/tfjs-node for more details.
+
 // const REFERENCE_IMAGE = './workerProfile/4riy3j3bktei2jko/1.png'
 // const QUERY_IMAGE = './workerProfile/4riy3j3bktei2jko/2.png'
 
