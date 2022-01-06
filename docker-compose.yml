@@ -1,0 +1,10 @@
+version: "3.9"
+services: 
+    couchbasedb:
+        image: "couchbase"
+        ports: 
+            - "8091:8091"
+    codebase:
+        build: .
+        ports:
+            - "3000:3000"
