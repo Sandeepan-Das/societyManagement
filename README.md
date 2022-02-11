@@ -1,5 +1,5 @@
 # societyManagement
-This application automatize the work done to manage a society.  
+This application digitize the work done to manage a society.  
 
 # What I plan to achieve
 All the day to day works that don't require human intervention but are essential for a society to run efficently to be automatized.
