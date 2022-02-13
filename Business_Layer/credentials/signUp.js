@@ -70,6 +70,7 @@ loginResident = async (req,res,next) => {
         const result = await login(resident.uuid, refreshToken)
         res.status(200).send({ accessToken, refreshToken })
     } catch (error) {
+        console.log(error)
         next(error)
     }
 }
